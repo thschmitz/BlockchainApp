@@ -1,11 +1,17 @@
 import React from 'react';
 import styled from "styled-components"
 
-const Header = () => {
+const Header = ({walletAddress, connectWallet}) => {
     return(
         <Wrapper>
             <Title>Assets</Title>
             <ButtonsContainer>
+                <WalletLink>
+                    <WalletLinkTitle>Wallet Connected</WalletLinkTitle>
+                    <WalletAddress>
+                        {walletAddress.slice(0,7)} ... {walletAddress.slice(35)}
+                    </WalletAddress>
+                </WalletLink>
                 <Button style={{backgroundColor: "#3773f5", color: "#000"}}>
                     Buy/Sell
                 </Button>
@@ -62,7 +68,7 @@ const WalletLink = styled.div`
     margin-right: 1rem;
     padding: 0 1rem;
     display: flex;
-    flex-direction: flex-start;
+    flex-direction: column;
     align-items: flex-start;
     justify-content: center;
 `
@@ -70,5 +76,10 @@ const WalletLink = styled.div`
 const WalletLinkTitle = styled.div`
     font-size: 1.1rem;
     margin-bottom: 0.3rem;
-    color: #27ad75
+    color: #27ad75;
+    font-weight: 600;
+`
+
+const WalletAddress = styled.div`
+    font-size: 0.8rem;
 `
