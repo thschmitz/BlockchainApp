@@ -4,12 +4,17 @@ import styled from "styled-components"
 const Header = () => {
     return(
         <Wrapper>
-            <Button style={{backgroundColor: "#3773f5", color: "#000"}}>
-                Buy/Sell
-            </Button>
-            <Button>
-                Send/Receive
-            </Button>
+            <Title>Assets</Title>
+            <ButtonsContainer>
+                <Button style={{backgroundColor: "#3773f5", color: "#000"}}>
+                    Buy/Sell
+                </Button>
+                <Button>
+                    Send/Receive
+                </Button>
+            </ButtonsContainer>
+
+
         </Wrapper>
     )
 }
@@ -47,4 +52,23 @@ const Button = styled.div`
     :hover{
         cursor:pointer;
     }
+`
+
+const WalletLink = styled.div`
+    font-size: 0.8rem;
+    border: 1px solid #282b2f;
+    border-radius: 50rem;
+    font-size: 1.2rem;
+    margin-right: 1rem;
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: flex-start;
+    align-items: flex-start;
+    justify-content: center;
+`
+
+const WalletLinkTitle = styled.div`
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+    color: #27ad75
 `
