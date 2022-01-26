@@ -9,12 +9,13 @@ const Transfer = ({selectedToken, setAction, thirdWebTokens, walletAddress}) => 
     const [recipient, setRecipient] = useState("")
     const [imageUrl, setImageUrl] = useState(null)
     const [activeThirdWebToken, setActiveThirdWebToken] = useState()
+    const [balance, setBalance] = useState()
 
     useEffect(() =>{
         const activeToken = thirdWebTokens.find(
             token => token.address === selectedToken.contractAddress
         )
-
+        setActiveThirdWebToken(activeToken)
         console.log(activeToken, "HAHA")
     }, [thirdWebTokens, selectedToken])
 
@@ -24,11 +25,35 @@ const Transfer = ({selectedToken, setAction, thirdWebTokens, walletAddress}) => 
         setImageUrl(url)
     })
 
+    useEffect(() => {
+        const getBalance = async() => {
+            const balance = await activeThirdWebToken.balanceOf(walletAddress)
+            setBalance(balance.displayValue)
+            console.log(balance.displayValue)
+        }
+
+        if(activeThirdWebToken){
+            getBalance()
+        }
+    }, [activeThirdWebToken])
+
+    const sendCrypto = async() => {
+        console.log("sending crypto...")
+
+        if(activeThirdWebToken && amount && recipient){
+            const tx = await activeThirdWebToken.transfer(recipient, amount.toString().concat("000000000000000000"))
+            console.log(tx)
+            setAction("transferred")
+        } else{
+            console.error("missing data")
+        }
+    }
+
     return(
         <Wrapper>
             <Amount>
                 <FlexInputContainer>
-                    <FlexInput placeholder="0" type="number" value={amount} onClick={e => setAmount(e.target.value)}/>
+                    <FlexInput placeholder="0" type="number" value={amount} onChange={e => setAmount(e.target.value)}/>
                     <span>ETH</span>
                 </FlexInputContainer>
                 <Warning style={{color: amount && "#0a0b0d"}}>Amount is a required field</Warning>
@@ -55,7 +80,9 @@ const Transfer = ({selectedToken, setAction, thirdWebTokens, walletAddress}) => 
                 </Row>
             </TransferForm>
             <Row>
-                <Continue>Continue</Continue>
+                <Continue onClick={() => sendCrypto(amount, recipient)}>
+                    Continue
+                </Continue>
             </Row>
             <Row>
                 <BalanceTitle>{selectedToken.symbol} Balance</BalanceTitle>
@@ -105,7 +132,7 @@ const FlexInput = styled.input`
     color: #3773f5;
 
     & ::-webkit-outer-spin-button,
-    ::-webkit-inner-spin-button{
+    ::-webkit-inner-spin-button {
         -webkit-appearance: none;
     }
 `
