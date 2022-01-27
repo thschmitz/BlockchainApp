@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import styled from "styled-components"
 import Transfer from './Transfer';
 import CoinSelector from "./CoinSelector"
+import ReactLoading from "react-loading"
+import Receive from './Receive';
 
 const TransferModal = ({sanityTokens, thirdWebTokens, walletAddress}) => {
     const [action, setAction] = useState("send")
@@ -35,7 +37,39 @@ const TransferModal = ({sanityTokens, thirdWebTokens, walletAddress}) => {
                 walletAddress={walletAddress}
                 />
             case "receive":
-                return <h2>Receive</h2>
+                return <Receive setAction={setAction} selectedToken={selectedToken} walletAddress={walletAddress}/>
+            case "transferring":
+                return (
+                    <div style={{
+                        width: "100%",
+                        height: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        fontSize: "1.5rem",
+                    }}>
+                        <h2>Transfer in progress...</h2>
+                        <ReactLoading type="spin" color="gray" height={"100px"} width={"100px"} />
+                    </div>
+                )
+
+            case "transferred":
+                return (
+                    <div style={{
+                        width: "100%",
+                        height: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        fontSize: "2rem",
+                        fontWeight: "600",
+                        color: "#27ad75"
+                    }}>
+                        Transfer Complete!
+                    </div>
+                )
+
             default:
                 return <h2>Send</h2>
         }
@@ -78,6 +112,7 @@ const Selector = styled.div`
     align-items: center;
     height: 5rem;
 `
+
 
 const Option = styled.div`
     height: 100%;
