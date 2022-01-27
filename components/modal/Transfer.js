@@ -68,7 +68,7 @@ const Transfer = ({selectedToken, setAction, thirdWebTokens, walletAddress}) => 
                 <Divider />
                 <Row>
                     <FieldName>Pay with</FieldName>
-                    <CoinSelectList>
+                    <CoinSelectList onClick={() => setAction("select")}>
                         <Icon>
                             <img src={imageUrl} alt="" />
                         </Icon>

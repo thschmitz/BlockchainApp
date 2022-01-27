@@ -26,7 +26,14 @@ const TransferModal = ({sanityTokens, thirdWebTokens, walletAddress}) => {
                     />
                 )
             case "select":
-                return <CoinSelector setAction={setAction}/>
+                return <CoinSelector 
+                setAction={setAction}
+                selectedToken={selectedToken}
+                setSelectedToken={setSelectedToken}
+                sanityTokens={sanityTokens}
+                thirdWebTokens={thirdWebTokens}
+                walletAddress={walletAddress}
+                />
             case "receive":
                 return <h2>Receive</h2>
             default:
