@@ -16,14 +16,13 @@ const Transfer = ({selectedToken, setAction, thirdWebTokens, walletAddress}) => 
             token => token.address === selectedToken.contractAddress
         )
         setActiveThirdWebToken(activeToken)
-        console.log(activeToken, "HAHA")
     }, [thirdWebTokens, selectedToken])
 
     useEffect(() => {
         console.log(selectedToken, "a")
         const url = imageUrlBuilder(client).image(selectedToken.logo).url() // i made this to took the URL from a svg
         setImageUrl(url)
-    })
+    }, [selectedToken])
 
     useEffect(() => {
         const getBalance = async() => {
@@ -37,7 +36,7 @@ const Transfer = ({selectedToken, setAction, thirdWebTokens, walletAddress}) => 
         }
     }, [activeThirdWebToken])
 
-    const sendCrypto = async() => {
+    const sendCrypto = async(amount, recipient) => {
         console.log("sending crypto...")
 
         if(activeThirdWebToken && amount && recipient){
@@ -54,7 +53,7 @@ const Transfer = ({selectedToken, setAction, thirdWebTokens, walletAddress}) => 
             <Amount>
                 <FlexInputContainer>
                     <FlexInput placeholder="0" type="number" value={amount} onChange={e => setAmount(e.target.value)}/>
-                    <span>ETH</span>
+                    <span>{selectedToken.symbol}</span>
                 </FlexInputContainer>
                 <Warning style={{color: amount && "#0a0b0d"}}>Amount is a required field</Warning>
             </Amount>
@@ -86,7 +85,7 @@ const Transfer = ({selectedToken, setAction, thirdWebTokens, walletAddress}) => 
             </Row>
             <Row>
                 <BalanceTitle>{selectedToken.symbol} Balance</BalanceTitle>
-                <Balance>1.2 {selectedToken.symbol}</Balance>
+                <Balance> {balance} {selectedToken.symbol}</Balance>
             </Row>
         </Wrapper>
     )
