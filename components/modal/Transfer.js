@@ -30,7 +30,7 @@ const Transfer = ({selectedToken, setAction, thirdWebTokens, walletAddress}) => 
         const getBalance = async() => {
             const balance = await activeThirdWebToken.balanceOf(walletAddress)
             setBalance(balance.displayValue)
-            console.log(balance.displayValue)
+            console.log("aa:", balance.displayValue)
         }
 
         if(activeThirdWebToken){
@@ -44,7 +44,7 @@ const Transfer = ({selectedToken, setAction, thirdWebTokens, walletAddress}) => 
 
         if(activeThirdWebToken && amount && recipient){
             const tx = await activeThirdWebToken.transfer(recipient, amount.toString().concat("000000000000000000"))
-            console.log(tx)
+            console.log("TX:", tx)
             setAction("transferred")
         } else{
             console.error("missing data")

@@ -3,24 +3,45 @@ import styled from "styled-components"
 import {BsThreeDotsVertical} from "react-icons/bs"
 import { coins } from '../static/coins';
 import Coin from "./Coin"
-import BalanceChart from './BalanceChart';
+import {Bar} from 'react-chartjs-2';
+import Chart from 'chart.js/auto'
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+} from 'chart.js';
 
-
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
+);
 
 
 const Portfolio = ({thirdWebTokens, sanityTokens, walletAddress}) => {
 
-    const [walletBalance, setWalletBalance] = useState(0)
+    const [walletBalance, setWalletBalance] = useState(" Searching...")
+    const [walletToken, setWalletToken] = useState();
+    const [walletName, setWalletName] = useState()
     const tokenToUSD = {}
 
     for (const token of sanityTokens) {
         tokenToUSD[token.contractAddress] = Number(token.usdPrice)
     }
 
-
     // convert all of my tokens into USD
 
     useEffect (() => {
+
         const calculateTotalBalance = async() => {
             const totalBalance = await Promise.all(
                 thirdWebTokens.map(async token => {
@@ -31,15 +52,56 @@ const Portfolio = ({thirdWebTokens, sanityTokens, walletAddress}) => {
             console.log("Total Balance: ", totalBalance)
             setWalletBalance(totalBalance.reduce((acc, curr) => acc + curr, 0))
         }
+        const getBalance = async() => {
+            console.log("sanityTokens", sanityTokens)
+            console.log("thirdWebTokens", thirdWebTokens)
+            const totalToken = await Promise.all(
+                thirdWebTokens.map(async token => {
+                    const balance = await token.balanceOf(walletAddress)
+                    return Number(balance.displayValue)
+                })
+            )
+            const totalName = await Promise.all(
+                sanityTokens.map(async token => {
+                    return token.name
+                })
+            )
+
+            setWalletName(totalName)
+            console.log("Total Name: ", totalName)
+            
+            console.log("Total Token: ", totalToken)
+            setWalletToken(totalToken)
+        }
+
+
+        getBalance()
+
 
         return calculateTotalBalance()
     }, [thirdWebTokens])
 
+    const state = {
+
+
+        labels: walletName,
+        
+        datasets: [
+            {
+            label: 'CryptoCoins',
+            backgroundColor: '#3773f5',
+            borderColor: 'rgba(0,0,0,1)',
+            borderWidth: 2,
+            data: walletToken
+            }
+        ]
+
+      }
 
     return  (
         <Wrapper>
             <Content>
-                <Chart>
+                <Graph>
                     <div>
                         <Balance>
                             <BalanceTitle>Portfolio Balance</BalanceTitle>
@@ -49,12 +111,24 @@ const Portfolio = ({thirdWebTokens, sanityTokens, walletAddress}) => {
                             </BalanceValue>
                         </Balance>
                     </div>
-                    <BalanceChart/>
-
-                </Chart>
+                    <Bar
+                        data={state}
+                        options={{
+                            title:{
+                            display:true,
+                            text:'Average Rainfall per month',
+                            fontSize:20
+                            },
+                            legend:{
+                            display:true,
+                            position:'right'
+                            }
+                        }}
+                    />
+                </Graph>
                 <PortfolioTable>
                     <TableItem>
-                        <Title>Your Assets</Title>
+                        <TitleAssets>Your Assets</TitleAssets>
                     </TableItem>
                     <Divider />
                     <Table>
@@ -92,7 +166,7 @@ const Wrapper = styled.div`
     justify-content: center;
 `
 
-const Chart = styled.div`
+const Graph = styled.div`
     border: 1px solid #282b2f;
     padding: 1rem 2rem;
 `
@@ -144,7 +218,7 @@ const Divider = styled.div`
     border-bottom: 1px solid #282b2f
 `
 
-const Title = styled.div`
+const TitleAssets = styled.div`
     font-size: 1.5rem;
     font-weight: 600;
 `
