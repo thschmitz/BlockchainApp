@@ -4,6 +4,8 @@ import Transfer from './Transfer';
 import CoinSelector from "./CoinSelector"
 import ReactLoading from "react-loading"
 import Receive from './Receive';
+import { BiErrorCircle } from "react-icons/bi";
+import {AiFillCheckCircle} from "react-icons/ai"
 
 const TransferModal = ({sanityTokens, thirdWebTokens, walletAddress}) => {
     const [action, setAction] = useState("send")
@@ -54,12 +56,37 @@ const TransferModal = ({sanityTokens, thirdWebTokens, walletAddress}) => {
                     </div>
                 )
 
+            case "error":
+
+                return(
+                    <>
+                        <div style={{
+                            width: "100%",
+                            height: "100%",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            fontSize: "2rem",
+                            fontWeight: "600",
+                            color: "red",
+                        }}>
+                            Transfer Error!
+                            <BiErrorCircle style={{fontSize: "60px", marginTop: "30px"}}/>
+
+                        </div>
+
+                    </>
+
+                )
+
             case "transferred":
                 return (
                     <div style={{
                         width: "100%",
                         height: "100%",
                         display: "flex",
+                        flexDirection: "column",
                         justifyContent: "center",
                         alignItems: "center",
                         fontSize: "2rem",
@@ -67,6 +94,7 @@ const TransferModal = ({sanityTokens, thirdWebTokens, walletAddress}) => {
                         color: "#27ad75"
                     }}>
                         Transfer Complete!
+                        <AiFillCheckCircle style={{fontSize: "60px", marginTop: "30px"}}/>
                     </div>
                 )
 
@@ -76,6 +104,7 @@ const TransferModal = ({sanityTokens, thirdWebTokens, walletAddress}) => {
     }
 
     return(
+        <>
         <Wrapper>
             <Selector>
                 <Option style={ action === "send" ? selectedStyle: unselectedStyle} onClick={() => setAction("send")}>
@@ -89,8 +118,13 @@ const TransferModal = ({sanityTokens, thirdWebTokens, walletAddress}) => {
             <ModalMain>
                 {selectedModal(action)}
             </ModalMain>
-            
+
         </Wrapper>
+
+
+
+        </>
+
     )
 }
 

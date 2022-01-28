@@ -11,6 +11,8 @@ const Transfer = ({selectedToken, setAction, thirdWebTokens, walletAddress}) => 
     const [activeThirdWebToken, setActiveThirdWebToken] = useState()
     const [balance, setBalance] = useState()
 
+
+
     useEffect(() =>{
         const activeToken = thirdWebTokens.find(
             token => token.address === selectedToken.contractAddress
@@ -46,6 +48,8 @@ const Transfer = ({selectedToken, setAction, thirdWebTokens, walletAddress}) => 
             setAction("transferred")
         } else{
             console.error("missing data")
+            setAction("error")
+
         }
     }
 
@@ -88,6 +92,7 @@ const Transfer = ({selectedToken, setAction, thirdWebTokens, walletAddress}) => 
                 <BalanceTitle>{selectedToken.symbol} Balance</BalanceTitle>
                 <Balance> {balance} {selectedToken.symbol}</Balance>
             </Row>
+
         </Wrapper>
     )
 }

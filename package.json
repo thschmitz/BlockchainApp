@@ -11,6 +11,7 @@
     "@3rdweb/hooks": "^1.8.0",
     "@3rdweb/react": "^1.8.1",
     "@3rdweb/sdk": "^1.36.10",
+    "@mui/material": "^5.3.1",
     "@sanity/client": "^2.23.2",
     "@sanity/image-url": "^1.0.1",
     "ethers": "^5.5.3",
@@ -19,12 +20,18 @@
     "react": "17.0.2",
     "react-chartjs-2": "^4.0.1",
     "react-dom": "17.0.2",
+    "react-hot-toast": "^2.2.0",
     "react-icons": "^4.3.1",
     "react-loader-spinner": "^5.1.0",
     "react-loading": "^2.0.3",
     "react-modal": "^3.14.4",
+    "react-notifications": "^1.7.3",
+    "react-notifications-component": "^3.3.2",
+    "react-redux-toastr": "^7.6.7",
     "react-spinners": "^0.11.0",
-    "styled-components": "^5.3.3"
+    "react-toastify": "^8.1.0",
+    "styled-components": "^5.3.3",
+    "toastr": "^2.1.4"
   },
   "devDependencies": {
     "eslint": "8.7.0",
